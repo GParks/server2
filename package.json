@@ -1,0 +1,19 @@
+{
+  "name": "server2",
+  "version": "1.0.0",
+  "description": "all-purpose self-documenting REST with web pages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GParks/server2.git"
+  },
+  "author": "GParks",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GParks/server2/issues"
+  },
+  "homepage": "https://github.com/GParks/server2#readme"
+}
