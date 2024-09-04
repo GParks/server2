@@ -44,7 +44,8 @@ console.log("Couchbase bucket = "  + bucket)
 //     process.exit(1);
 //   });
 
-result =  bucket.upsert("k1", "value") 
+const collection = bucket.scope('test1').collection('docs')
+result =  collection.upsert("k1", "value") 
 
 function initApp() {
     app.use(cors());
