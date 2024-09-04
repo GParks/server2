@@ -4,7 +4,8 @@
   "description": "all-purpose self-documenting REST with web pages",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/GParks/server2/issues"
   },
-  "homepage": "https://github.com/GParks/server2#readme"
+  "homepage": "https://github.com/GParks/server2#readme",
+  "comment": "Claude told me so:",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "couchbase": "^3.2.4",
+    "express": "^4.19.2"
+  }
 }

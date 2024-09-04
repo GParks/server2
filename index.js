@@ -1,11 +1,23 @@
 // copied, initially, "whole cloth" from Claude.ai
-const express = require('express');
-const bodyParser = require('body-parser');
-const couchbase = require('couchbase');
-const documentsModule = require('./documents');
+// also via https://idx.google.com/
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:2310447541.
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:2116284359.
+const express = require('express')
+const bodyParser = require('body-parser')
+const couchbase = require('couchbase')
+const documentsModule = require('./documents')
+const cors = require('cors')
 
 const app = express();
-const port = 3000;
+const port = 3000
+const appCcontext = "/myApp"
+const pagesBase = appContext + "/pages"
+
+const logRequest = (req, _res, next) => {
+  console.log(">> ".concat(req.method, " ", req.url));
+  next();
+};
+
 
 // Couchbase connection options
 const cluster = new couchbase.Cluster('couchbase://localhost', {
@@ -30,11 +42,36 @@ bucket.waitUntilReady()
     process.exit(1);
   });
 
-// Parse JSON request bodies
-app.use(bodyParser.json({ limit: '50mb' }));
+
+function initApp() {
+    app.use(cors());
+    app.options("*", cors());
+    app.use(bodyParser.urlencoded({
+	extended: false
+    }));
+    app.use(bodyParser.json( { limit: '50mb' } ));
+    app.use(express.urlencoded({ extended: true }));
+    app.use(logRequest);
+}
+
+function initServices() {
+
+}
+
+initApp();
+initServices();
+
+const hostName = '127.0.0.1'
+
+
+// // Parse JSON request bodies
+// app.use(bodyParser.json({ limit: '50mb' }));
+
+const apiBaseUrl = appContext + "/api";
+const docsApiRoot = apiBaseUrl + "/docs";
 
 // POST endpoint to save a large document
-app.post('/documents', (req, res) => {
+app.post(docsApiRoot, (req, res) => {
   const document = req.body;
   bucket.insertAsync(document._id, document)
     .then(() => {
@@ -47,7 +84,7 @@ app.post('/documents', (req, res) => {
 });
 
 // GET endpoint to retrieve documents from the file system
-app.get('/documents', (req, res) => {
+app.get(docsApiRoot, (req, res) => {
   documentsModule.getDocumentsFromFileSystem()
     .then((documents) => {
       res.json(documents);

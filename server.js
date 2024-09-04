@@ -1,3 +1,5 @@
+// copied, initially, "whole cloth" from Claude.ai
+// also via https://idx.google.com/
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:2310447541.
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:2116284359.
 const express = require('express');
