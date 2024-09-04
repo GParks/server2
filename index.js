@@ -45,7 +45,16 @@ console.log("Couchbase bucket = "  + bucket)
 //   });
 
 const collection = bucket.scope('test1').collection('docs')
-result =  collection.upsert("k1", "value") 
+result =  collection.upsert("k1", "value").then(() => {
+  console.log("upsert done")
+}, () => {
+  console.log("upsert failed")
+}
+).catch((err) => {
+  console.log("exception thrown from upsert: " + err)
+});
+
+console.log("result = " + result)
 
 function initApp() {
     app.use(cors());
