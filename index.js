@@ -44,7 +44,7 @@ console.log("Couchbase bucket = "  + bucket)
 //     process.exit(1);
 //   });
 
-result = await bucket.upsert("k1", "value") 
+result =  bucket.upsert("k1", "value") 
 
 function initApp() {
     app.use(cors());
