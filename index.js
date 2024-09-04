@@ -29,21 +29,22 @@ const bucket = cluster.bucket('docs1'); // Replace with your bucket name
 
 console.log("Couchbase bucket = "  + bucket)
 
-// Connect to Couchbase
-bucket.waitUntilReady()
-  .then(() => {
-    console.log('Connected to Couchbase');
+// // Connect to Couchbase
+// bucket.waitUntilReady()
+//  .then(() => {
+//     console.log('Connected to Couchbase');
 
-    // Start the server
-    app.listen(port, () => {
-      console.log(`Server is running on http://localhost:${port}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Failed to connect to Couchbase:', err);
-    process.exit(1);
-  });
+//     // Start the server
+//     app.listen(port, () => {
+//       console.log(`Server is running on http://localhost:${port}`);
+//     });
+//   })
+//   .catch((err) => {
+//     console.error('Failed to connect to Couchbase:', err);
+//     process.exit(1);
+//   });
 
+result = await bucket.upsert("k1", "value") 
 
 function initApp() {
     app.use(cors());
