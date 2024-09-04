@@ -25,7 +25,9 @@ const cluster = new couchbase.Cluster('couchbase://localhost', {
   password: 'password', // Replace with your Couchbase password
 });
 
-const bucket = cluster.bucket('rest-service'); // Replace with your bucket name
+const bucket = cluster.bucket('docs1'); // Replace with your bucket name
+
+console.log("Couchbase bucket = "  + bucket)
 
 // Connect to Couchbase
 bucket.waitUntilReady()
