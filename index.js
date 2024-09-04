@@ -10,7 +10,7 @@ const cors = require('cors')
 
 const app = express();
 const port = 3000
-const appCcontext = "/myApp"
+const appContext = "/myApp";
 const pagesBase = appContext + "/pages"
 
 const logRequest = (req, _res, next) => {
