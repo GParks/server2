@@ -5,11 +5,14 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const couchbase = require('couchbase')
-const documentsModule = require('./documents')
+// const documentsModule = require('./documents')
+// 2024-09-05: I don't even know what that was!
 const cors = require('cors')
 
 const app = express();
 const port = 3000
+const hostName = '127.0.0.1'
+
 const appContext = "/myApp";
 const pagesBase = appContext + "/pages"
 
@@ -19,42 +22,20 @@ const logRequest = (req, _res, next) => {
 };
 
 
-// Couchbase connection options
-const cluster = new couchbase.Cluster('couchbase://localhost', {
-  username: 'username', // Replace with your Couchbase username
-  password: 'password', // Replace with your Couchbase password
-});
 
-const bucket = cluster.bucket('docs1'); // Replace with your bucket name
+const add = (key, value) => {
+  result =  collection.upsert(key, value).then((val) => {
+    console.log("upsert done: " + val)
+  }, (err) => {
+    console.log("upsert failed: " + err)
+  }
+  ).catch((err) => {
+    console.log("exception thrown from upsert: " + err)
+  });  
 
-console.log("Couchbase bucket = "  + bucket)
-
-// // Connect to Couchbase
-// bucket.waitUntilReady()
-//  .then(() => {
-//     console.log('Connected to Couchbase');
-
-//     // Start the server
-//     app.listen(port, () => {
-//       console.log(`Server is running on http://localhost:${port}`);
-//     });
-//   })
-//   .catch((err) => {
-//     console.error('Failed to connect to Couchbase:', err);
-//     process.exit(1);
-//   });
-
-const collection = bucket.scope('test1').collection('docs')
-result =  collection.upsert("k1", "value").then(() => {
-  console.log("upsert done")
-}, () => {
-  console.log("upsert failed")
+  console.log("result = " + result)
 }
-).catch((err) => {
-  console.log("exception thrown from upsert: " + err)
-});
 
-console.log("result = " + result)
 
 function initApp() {
     app.use(cors());
@@ -73,8 +54,6 @@ function initServices() {
 
 initApp();
 initServices();
-
-const hostName = '127.0.0.1'
 
 
 // // Parse JSON request bodies
@@ -107,3 +86,7 @@ app.get(docsApiRoot, (req, res) => {
       res.status(500).json({ error: 'Failed to retrieve documents' });
     });
 });
+
+app.listen(port, () => {
+  console.log('\t listening at http://${hostName}:${port}')
+})
