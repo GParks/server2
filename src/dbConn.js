@@ -38,11 +38,7 @@ let cached = global.couchbase
 
 if (!cached) {
   cached = global.couchbase = { conn: null }
-}
-
-const bucket = cluster.bucket('docs1'); // Replace with your bucket name
-
-console.log("Couchbase bucket = "  + bucket)
+};
 
 // // Connect to Couchbase
 // bucket.waitUntilReady()
@@ -59,7 +55,6 @@ console.log("Couchbase bucket = "  + bucket)
 //     process.exit(1);
 //   });
 
-const collection = bucket.scope('test1').collection('docs')
 
 
 async function createCouchbaseCluster() {
@@ -68,30 +63,33 @@ async function createCouchbaseCluster() {
   }
 
   // Use wan profile to avoid latency issues
-  cached.conn = await couchbase.connect(DB_CONN_STR, {
-    username: DB_USERNAME,
-    password: DB_PASSWORD,
-    configProfile: 'wanDevelopment',
+  // Couchbase connection options
+  cached.conn = await couchbase.connect('couchbase://localhost', {
+    username: 'user1',
+    password: 'alFoPASH'
+    // , configProfile: 'wanDevelopment'
   })
+
+  log.console("  cached conn[ection] is a(n) ". Object.prototype.toString.apply(cached.conn));
 
   return cached.conn
 }
 
 export async function connectToDatabase() {
   const cluster = await createCouchbaseCluster()
-  const bucket = cluster.bucket(DB_BUCKET_NAME)
-  const scope = bucket.scope('inventory')
-  const airlineCollection = bucket.scope('inventory').collection('airline')
-  const airportCollection = bucket.scope('inventory').collection('airport')
-  const routeCollection = bucket.scope('inventory').collection('route')
+  const bucket = cluster.bucket('docs1')
+  const scope = bucket.scope('test')
+  // const airlineCollection = bucket.scope('inventory').collection('airline')
+  // const airportCollection = bucket.scope('inventory').collection('airport')
+  // const routeCollection = bucket.scope('inventory').collection('route')
 
   let dbConnection = {
     cluster,
     bucket,
     scope,
-    airlineCollection,
-    airportCollection,
-    routeCollection,
+    // airlineCollection,
+    // airportCollection,
+    // routeCollection,
   }
 
   return dbConnection
